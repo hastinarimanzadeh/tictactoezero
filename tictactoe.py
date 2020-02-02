@@ -56,7 +56,7 @@ class TicTacToe:
         else:
             self.__current_player = Player.X
 
-    def draw_baord(self):
+    def draw(self):
         occupants = ['x', 'o', '-']
         print('\n')
         for i in range(3):
