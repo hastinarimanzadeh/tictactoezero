@@ -31,7 +31,8 @@ class Node:
         return self.__action
 
 class TreeSearch:
-    def __init__(self, state, exploration_factor):
+    def __init__(self, state, model, exploration_factor):
+        self.__model = model
         self.__initial_state = state
         self.__exploration_factor = exploration_factor
         self.__root = Node(None, None)
@@ -61,7 +62,7 @@ class TreeSearch:
             if current_node.children():
                 current_node = random.choice(current_node.children())
                 current_state.play(current_node.action())
-        w = self.rollout(current_state)
+        w = self.__model.evaluate(current_state)
 
         while current_node is not None:
             current_node.simulations += 1
@@ -73,15 +74,3 @@ class TreeSearch:
     def policy(self):
         return [(child.action(), child.simulations/self.__root.simulations)
                     for child in self.__root.children()]
-
-    def rollout(self, state):
-        initial_turn = state.turn()
-        while state.state() is GameState.Continue:
-            move = random.choice(state.legal_moves())
-            state.play(move)
-        if state.state() is GameState.Tie:
-            return 0
-        elif initial_turn is state.winner():
-            return -1
-        else:
-            return +1

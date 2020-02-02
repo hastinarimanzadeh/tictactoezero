@@ -1,6 +1,7 @@
 import unittest
 from mcts import Node, TreeSearch
 from game import GameState, Player
+from models import RandomModel
 
 class TestGame:
     def __init__(self):
@@ -53,7 +54,8 @@ class MCTSTests(unittest.TestCase):
 
     def test_mcts_two_choice_game(self):
         test_game = TestGame()
-        ts = TreeSearch(test_game, 2)
+        model = RandomModel()
+        ts = TreeSearch(test_game, model, 2)
         for i in range(200):
             ts.iterate()
         policy = dict(ts.policy())
