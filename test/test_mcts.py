@@ -1,7 +1,9 @@
 import unittest
+import numpy as np
 from mcts import Node, TreeSearch
 from game import GameState, Player
 from models import RandomModel
+
 
 class TestGame:
     def __init__(self):
@@ -35,6 +37,19 @@ class TestGame:
 
     def play(self, move):
         self.__choice = move
+
+    def to_tensor(self):
+        value = 0
+        if self.__choice is None:
+            value = 0
+        elif self.__choice == "win":
+            value = 1
+        else:
+            value = -1
+        return np.array([[[value]]])
+
+    def policy_to_tensor(self, policy):
+        return np.array([[[policy["win"], policy["lose"]]]])
 
 class MCTSTests(unittest.TestCase):
     def test_single_node_tree(self):
