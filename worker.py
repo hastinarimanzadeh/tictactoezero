@@ -22,5 +22,6 @@ if __name__ == "__main__":
                         "gamedata-{:05x}.json".format(run_id))
 
         with open(filename, 'w') as file:
-            file.write(json.dumps(
-                [(x.tolist(), p.tolist(), v) for x, p, v in history]))
+            json.dump(
+                [(x.tolist(), p.tolist(), v) for x, p, v in history],
+                file)

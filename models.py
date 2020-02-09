@@ -55,34 +55,6 @@ class NeuralNetworkModel(tf.keras.Model):
                     tf.reshape(estimated_policy, (batch_size, -1)))
         return mse + ent
 
-
-def distil_amplify(initial_state, model, optimizer):
-    data = []
-    for i in range(200):
-        data.extend(compare_models(model, model, initial_state))
-    states, policies, values = zip(*data)
-    with tf.GradientTape() as tape:
-         estimated_policies, estimated_values = model(np.array(states))
-         losses = model.loss(estimated_policies, estimated_values,
-                            np.array(policies), np.array(values))
-    print("loss:", np.mean(losses), "batch size:", len(data))
-    grads = tape.gradient(losses, model.trainable_variables)
-    optimizer.apply_gradients(zip(grads, model.trainable_variables))
-
-def train(iteration, initial_state):
-    model = NeuralNetworkModel()
-    optimizer = tf.keras.optimizers.Adam()
-
-    checkpoint_directory = "./training_checkpoints"
-    checkpoint_prefix = os.path.join(checkpoint_directory, "ckpt")
-    checkpoint = tf.train.Checkpoint(optimizer=optimizer, model=model)
-    status = checkpoint.restore(tf.train.latest_checkpoint(checkpoint_directory))
-
-    for i in range(iteration):
-        distil_amplify(initial_state, model, optimizer)
-
-    checkpoint.save(file_prefix=checkpoint_prefix)
-
 def compare_models(model1, model2, initial_state):
     state = deepcopy(initial_state)
     cycle = itertools.cycle([model1, model2])
