@@ -72,5 +72,5 @@ class TreeSearch:
 
     # returns action and its weight for children of root
     def policy(self):
-        return [(child.action(), child.simulations/self.__root.simulations)
+        return [(child.action(), child.simulations)
                     for child in self.__root.children()]
