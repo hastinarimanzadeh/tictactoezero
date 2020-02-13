@@ -1,5 +1,6 @@
 # Tic-Tac-Toe Zero
 ![Tests](https://github.com/hastinarimanzadeh/tictactoezero/workflows/Tests/badge.svg)
+
 AlphaZero implementation for Tic-Tac-Toe
 
 ## Installation
