@@ -71,9 +71,10 @@ class MCTSTests(unittest.TestCase):
         test_game = TestGame()
         model = RandomModel()
         ts = TreeSearch(test_game, model, 2)
-        for i in range(200):
+        iterations = 200
+        for i in range(iterations):
             ts.iterate()
         policy = dict(ts.policy())
-        self.assertGreater(policy["win"], 0.9)
-        self.assertLess(policy["lose"], 0.1)
-        self.assertAlmostEqual(policy["win"] + policy["lose"], 1.0)
+        self.assertGreater(policy["win"], iterations*0.9)
+        self.assertLess(policy["lose"], iterations*0.1)
+        self.assertAlmostEqual(policy["win"] + policy["lose"], iterations)
